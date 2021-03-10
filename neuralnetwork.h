@@ -49,32 +49,42 @@ class neuron{
 private:
 int len;
 vector<double> wt;
-
+vector<double> diff;
 public:
 neuron(int inputlen);
 void clear();
 double out(vector<int>& input);
 double derv(int id,vector<int>& input);
 int getlen(){return len;};
-void readwt();
+void readwt(int n);
+void readdiff();
 };
 
 
 neuron::neuron(int inputlen){
 len=inputlen+1;
-vector<double> x;
-for(int i=0;i<=inputlen;i++)
+wt.clear();
+diff.assign(len,0);
+for(int i=0;i<len;i++)
   wt.push_back((-9999+(rand()%19999))/1000.0);
 }
 
 void neuron::clear(){
 len=0;
 wt.clear();
+diff.clear();
 }
 
-void neuron::readwt(){
+void neuron::readwt(int n){
+  cout<<"neuron"<<n<<"  ";
     for (int j = 0; j <len; j++)
       cout<<wt[j]<<"   ";
+    cout<<"\n";
+}
+
+void neuron::readdiff(){
+    for (int j = 0; j <len; j++)
+      cout<<diff[j]<<"   ";
     cout<<"\n";
 }
 
@@ -86,24 +96,26 @@ class layer{
 private:
 int len;
 int inputlen;
-vector<neuron> n;
+vector<neuron> neurons;
 public:
 layer(int neuronlen,int inlen);
-void readout();
+void readout(int n);
 };
 
 
 layer::layer(int neuronlen,int inlen){
   len=neuronlen;
   inputlen=inlen;
-  n.clear();
+  neurons.clear();
   for(int i=0;i<neuronlen;i++)
-    n.push_back(neuron(inlen));
+    neurons.push_back(neuron(inlen));
 }
 
-void layer::readout(){
+void layer::readout(int n){
+  cout<<"layer"<<n<<"\n";
   for(int i=0;i<len;i++)
-    n[i].readwt();
+    neurons[i].readwt(i);
+    cout<<"\n";
 }
 
 
@@ -116,24 +128,38 @@ private:
 int len;
 int inlen;
 int outlen;
-vector<layer> ly;
+vector<layer> layers;
 dataset input;
 public:
-void init(dataset in,vector<layer> l);
+void init(dataset,vector<int>);
 void learn(int itr);
 string exportdatatostring();
-
+void readout();
 };
 
 
-void network::init(dataset in,vector<layer> l){
+void network::init(dataset in,vector<int> structure){
+  len=structure.size();
+  inlen=structure[0];
+  outlen=structure[len-1];
   input=in;
-  ly=l;
-};
+  layers.clear();
+  layers.push_back(layer(structure[0],structure[0]));
 
+  for(int i=1;i<len;i++)
+    layers.push_back(layer(structure[i],structure[i-1]));  
+}
+
+
+void network::readout(){
+for(int i=0;i<len;i++)
+    layers[i].readout(i);
+    cout<<"\n";
+}
 
 
 /* ________********       READ DATA FUNCTION       ********________ */
+
 void readfile(dataset& in,string filename){
 string line;
 string word;
