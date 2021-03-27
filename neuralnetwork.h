@@ -215,7 +215,7 @@ vector<double> network::feedforword(){
 void network::readout(){
 for(int i=0;i<len;i++)
     layers[i].readout(i);
-    cout<<"\n";
+    cout<<" \n";
 }
 
 
