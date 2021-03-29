@@ -28,12 +28,15 @@ class dataset{
   vector<vector<double> > set;
   dataset();
   void read();
+  void compare(vector<vector<double> >& input);
     
 };
 
 dataset::dataset(){
   setlen=0;
   len=0;
+  ilen=0;
+  olen=0;
 }
 
 
@@ -103,6 +106,9 @@ double neuron::forword(vector<double>& input){
 }
 
 
+
+
+
 void neuron::clear(){
 len=0;
 preinput.clear();
@@ -139,7 +145,7 @@ vector<neuron> neurons;
 vector<int> out;
 public:
 layer(int neuronlen,int inlen);
-vector<double> feedforword(vector<double>& input);
+vector<double> feedforword(vector<double> input);
 void readout(int n);
 };
 
@@ -152,7 +158,7 @@ layer::layer(int neuronlen,int inlen){
     neurons.push_back(neuron(inlen));
 }
 
-vector<double> layer::feedforword(vector<double>& input){
+vector<double> layer::feedforword(vector<double> input){
 vector<double> temp;
 for(int i=0;i<len;i++)
 temp.push_back(neurons[i].forword(input));
@@ -181,7 +187,7 @@ vector<layer> layers;
 dataset input;
 public:
 void init(dataset,vector<int>);
-vector<double> feedforword();
+vector<vector<double> > feedforword();
 string exportdatatostring();
 void readout();
 };
@@ -200,15 +206,18 @@ void network::init(dataset in,vector<int> structure){
 }
 
 
-vector<double> network::feedforword(){
+vector<vector<double> > network::feedforword(){
   vector<double> temp;
-  vector<vector<double> > data;
+  vector<vector<double> > result;
+  
   for(int i=0;i<input.setlen;i++){
     temp=layers[0].feedforword(input.set[i]);
     for(int j=1;j<layers.size();j++)
-    temp=layers[i].feedforword(temp);
+    temp=layers[j].feedforword(temp);
+    result.push_back(temp);
   }
-  return temp;
+ 
+  return result;
 }
 
 
