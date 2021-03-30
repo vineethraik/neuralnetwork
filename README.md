@@ -1,22 +1,13 @@
 # neuralnetwork
-structure of nn
+# Structure of Neural Network
 
-network has layers
-layer has neurons
-neurons has weights
+[Network]() has layers<br>
+[Layer]() has neurons<br>
+[Neuron]() has weights<br>
 
-# Contents
- - [Specification](#specification) 
- - [Dependencies Title](#dependencies-title) 
+## Network
 
-## Specification
-Example text blah. Example text blah. Example text blah. Example text blah. 
-Example text blah. Example text blah. Example text blah. Example text blah. 
-Example text blah. Example text blah. Example text blah. Example text blah. 
-Example text blah. Example text blah. 
+## Layer
 
-## Dependencies Title
-Example text blah. Example text blah. Example text blah. Example text blah. 
-Example text blah. Example text blah. Example text blah. Example text blah. 
-Example text blah. Example text blah. Example text blah. Example text blah. 
-Example text blah. Example text blah. 
+## Neuron
+<img src="/images/network1.png" alt="drawing" width="330" hight="440"/>
