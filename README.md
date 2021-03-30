@@ -5,18 +5,6 @@ network has layers
 layer has neurons
 neurons has weights
 
-# Contents
- - [Specification](#specification) 
- - [Dependencies Title](#dependencies-title) 
 
-## Specification
-Example text blah. Example text blah. Example text blah. Example text blah. 
-Example text blah. Example text blah. Example text blah. Example text blah. 
-Example text blah. Example text blah. Example text blah. Example text blah. 
-Example text blah. Example text blah. 
 
-## Dependencies Title
-Example text blah. Example text blah. Example text blah. Example text blah. 
-Example text blah. Example text blah. Example text blah. Example text blah. 
-Example text blah. Example text blah. Example text blah. Example text blah. 
-Example text blah. Example text blah. 
+![alt text](https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Neural_network_example.svg/800px-Neural_network_example.svg.png)
