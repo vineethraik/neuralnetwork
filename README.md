@@ -7,4 +7,4 @@ neurons has weights
 
 
 
-![fit](https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Neural_network_example.svg/800px-Neural_network_example.svg.png)
+![GitHub Logo](https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Neural_network_example.svg/800px-Neural_network_example.svg.png)
