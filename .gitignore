@@ -1,3 +1,5 @@
 *.exe
 temp.cpp
+temp1.cpp
+temp2.cpp
 .vscode
