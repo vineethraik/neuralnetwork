@@ -9,6 +9,9 @@
 using namespace std;
 
 /* ________********       sigmoid       ********________ */
+#define lrate .1
+
+/* ________********       sigmoid       ********________ */
 
 double sigmoid(double x){
   return (1/(1+exp(-x)));
@@ -28,7 +31,7 @@ class dataset{
   vector<vector<double> > set;
   dataset();
   void read();
-  void compare(vector<vector<double> >& input);
+  void compare(vector<vector<double> > input);
     
 };
 
@@ -53,6 +56,18 @@ void dataset::read(){
   }
 }
 
+
+void dataset::compare(vector<vector<double> > input){
+  for(int i=0;i<setlen;i++){
+    for(int j=0;j<olen;j++)
+      cout<<set[i][ilen+j]<<"\t";
+    cout<<"|vs|\t";
+    for(int j=0;j<olen;j++)
+      cout<<input[i][j]<<"\t";
+  cout<<"\n";
+  }
+}
+
 /* ________********       NEURON       ********________ */
 
 
@@ -69,7 +84,7 @@ public:
 neuron(int inputlen);
 void clear();
 double forword(vector<double>& input);
-double derv(int id,vector<int>& input);
+vector<double> backprop(double var);
 int getlen(){return len;};
 void readwt(int n);
 void readdiff();
@@ -106,7 +121,15 @@ double neuron::forword(vector<double>& input){
 }
 
 
-
+vector<double> neuron::backprop(double var){
+out_diff=var;
+vector<double> result;
+for(int i=0;i<len-1;i++){
+wt[i]+=lrate*out_diff*diff[i];
+result.push_back(sigmoid(out_diff*wt[i]));
+}
+return result;
+}
 
 
 void neuron::clear(){
@@ -142,10 +165,11 @@ private:
 int len;
 int inputlen;
 vector<neuron> neurons;
-vector<int> out;
+vector<double> out;
 public:
 layer(int neuronlen,int inlen);
 vector<double> feedforword(vector<double> input);
+vector<double> backprop(vector<double> var);
 void readout(int n);
 };
 
@@ -159,11 +183,24 @@ layer::layer(int neuronlen,int inlen){
 }
 
 vector<double> layer::feedforword(vector<double> input){
-vector<double> temp;
+vector<double> temp; 
 for(int i=0;i<len;i++)
 temp.push_back(neurons[i].forword(input));
-
+out=temp;
 return temp;
+}
+
+vector<double> layer::backprop(vector<double> var){
+  vector<vector<double> > result;
+  vector<double> res(inputlen,0);
+  for(int i =0;i<len;i++){
+   result.push_back( neurons[i].backprop(var.at(i)));
+  }
+  for(int i=0;i<inputlen;i++){
+    for(int j=0;j<len;j++)
+      res[i]+=result[j][i]/len;
+  }
+  return res;
 }
 
 void layer::readout(int n){
