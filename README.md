@@ -5,9 +5,12 @@
 [Layer](#Layer) has neurons<br>
 [Neuron](#Neuron) has weights<br>
 
-## Network
+## Neuron
 
 ## Layer
 
-## Neuron
-<img src="/images/network.png" alt="drawing" width="330" hight="440"/>
+## Network
+
+<img src="images/network.png" alt="drawing" width="330" hight="440"/>
+
+
