@@ -122,7 +122,7 @@ double neuron::forword(vector<double>& input){
 
 
 vector<double> neuron::backprop(double var){
-out_diff=var;
+out_diff=var-out;
 vector<double> result;
 for(int i=0;i<len-1;i++){
 wt[i]+=lrate*out_diff*diff[i];
@@ -225,6 +225,7 @@ dataset input;
 public:
 void init(dataset,vector<int>);
 vector<vector<double> > feedforword();
+
 string exportdatatostring();
 void readout();
 };
