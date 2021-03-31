@@ -1,9 +1,9 @@
 # neuralnetwork
 # Structure of Neural Network
 
-[Network]() has layers<br>
-[Layer]() has neurons<br>
-[Neuron]() has weights<br>
+[Network](#Network) has layers<br>
+[Layer](#Layer) has neurons<br>
+[Neuron](#Neuron) has weights<br>
 
 ## Network
 
