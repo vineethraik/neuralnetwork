@@ -9,7 +9,7 @@
 using namespace std;
 
 /* ________********       sigmoid       ********________ */
-#define lrate .1
+#define lrate .01
 
 /* ________********       sigmoid       ********________ */
 
@@ -122,7 +122,7 @@ double neuron::forword(vector<double>& input){
 
 
 vector<double> neuron::backprop(double var){
-out_diff=var-out;
+out_diff=var;
 vector<double> result;
 for(int i=0;i<len-1;i++){
 wt[i]+=lrate*out_diff*diff[i];
@@ -225,7 +225,7 @@ dataset input;
 public:
 void init(dataset,vector<int>);
 vector<vector<double> > feedforword();
-
+vector<double> backprop(int);
 string exportdatatostring();
 void readout();
 };
@@ -256,6 +256,28 @@ vector<vector<double> > network::feedforword(){
   }
  
   return result;
+}
+
+vector<double> network::backprop(int itr){
+  vector<double> temp;
+  vector<double> temp1;
+
+ for(int k=0;k<itr;k++){
+   for(int i=0;i<input.setlen;i++){
+    temp1=layers[0].feedforword(input.set[i]);
+    for(int j=1;j<layers.size();j++)
+    temp1=layers[j].feedforword(temp1);
+    temp.assign(input.set[i].begin()-1+input.ilen,input.set[i].end());
+    for(int j=0;j<temp.size();j++){
+      temp[j]=temp[j]-temp1[j];
+    }
+    temp=layers[len-1].backprop(temp);
+    for(int j=len-2;j>=0;j--){
+      temp=layers[j].backprop(temp);
+    }
+   }
+ } 
+ return temp;
 }
 
 
