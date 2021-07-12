@@ -10,7 +10,7 @@ int main()
   dataset x,y;                    //input storage class
   vector<vector<double> > temp;   //var to store output
 
-  readfile(x,"t.txt");        //gathering training data from input.txt file
+  readdatafile(x,"t.txt");        //gathering training data from input.txt file
   //x.read();                       
   
     
