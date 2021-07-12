@@ -73,20 +73,58 @@ void dataset::compare(vector<vector<double> > input){
 /*******************************class neuron**************************************/
 class neuron{
   private:
+  layer ly;
+  network net;
   public:
+  neuron(int,layer,network);
+
+  friend class layer;
+  friend class network;
 };
+//initialization
+neuron::neuron(int len,layer x,network y){
+ly=x,net=y;
+}
+
+/*******************************class normalization layer**************************************/
+class layer1{
+  private:
+  public:
+  layer1();
+};
+
+layer1::layer1(){
+  
+}
 
 /*******************************class layer**************************************/
 class layer{
   private:
+  network net;
   public:
+  layer(int,network);
+
+  friend class network;
+  friend class neuron;
 };
+
+layer::layer(int len,network x){
+net=x;
+}
 
 /*******************************class network**************************************/
 class network{
   private:
   public:
+  network();
+
+  friend class layer;
+  friend class neuron;
 };
+
+network::network(){
+
+}
 
 /*******************************function sigmoid**************************************/
 inline double sigmoid(double x){
