@@ -8,8 +8,10 @@
 #include<ctime>
 using namespace std;
 
-/* ________********       sigmoid       ********________ */
-#define lrate .01
+/* ________********       constents      ********________ */
+#define lrate_wt .3
+#define lratew_input .1
+#define xtt false
 
 /* ________********       sigmoid       ********________ */
 
@@ -84,7 +86,7 @@ public:
 neuron(int inputlen);
 void clear();
 double forword(vector<double>& input);
-vector<double> backprop(double var);
+vector<double> backprop(double var,int l_num);
 int getlen(){return len;};
 void readwt(int n);
 void readdiff();
@@ -100,7 +102,9 @@ wt.clear();
 diff.assign(len,0);
 preinput.assign(len-1,0);
 for(int i=0;i<len;i++)
+  //wt.push_back(5*pow(-1,i/*rand())/**/));
   wt.push_back((-9999+(rand()%19999))/1000.0);
+  //wt.push_back(5);
 }
 
 
@@ -120,16 +124,69 @@ double neuron::forword(vector<double>& input){
   return out;
 }
 
-
+/*
 vector<double> neuron::backprop(double var){
-out_diff=var;
-vector<double> result;
+vector<double> result(len-1,0);
+vector<double> wtchange(len,0);
+double temp;
 for(int i=0;i<len-1;i++){
-wt[i]+=lrate*out_diff*diff[i];
-result.push_back(sigmoid(out_diff*wt[i]));
+  
+  for(int j=0;j<len-1;j++){
+    if(j==i)
+      temp+=preinput[j]*(wt[j]+10);
+    temp+=preinput[j]*(wt[j]);
+  }
+    
+  temp+=wt[len-1];
+  wtchange.at(i)=sigmoid(temp)-out;
+  //cout<<temp<<" -> "<<sigmoid(temp)<<" - "<< preout<<"="<<sigmoid(temp)-preout<<"\n";
+  temp=0;
 }
+
+for(int j=0;j<len-1;j++){
+    temp+=preinput[j]*(wt[j]);
+  }
+    
+  temp+=(wt[len-1]+1);
+  wtchange.at(len-1)=(sigmoid(temp)-out);
+ temp=0;
+for(int i=0;i<len-1;i++){
+  for(int j=0;j<len-1;j++){
+    if(j==i)
+      temp+=(preinput[j]+1)*(wt[j]);
+    temp+=preinput[j]*(wt[j]);
+  }
+    
+  temp+=wt[len-1];
+  result[i]=(sigmoid(temp)-preout);
+  temp=0;
+  if(xtt)
+  cout<<result[i]<<"\t";
+}
+if(xtt)
+cout<<"\n";
+
+for(int i=0;i<len;i++){
+wt[i]+=lrate_wt*(var*wtchange[i]);
+}
+
 return result;
 }
+*/
+
+
+vector<double> neuron::backprop(double var,int l_num){
+vector<double> result(len-1,0);
+for(int i=0;i<len-1;i++){
+  //result[i]=(1*lratew_input*var*(sigmoid(var)*(1-sigmoid(var)))*wt[i]*preinput[i]);
+  result[i]=lratew_input*pow(-1,l_num)*var*out*(sigmoid(out)*(1-sigmoid(out)))*wt[i];
+  wt[i]+=lrate_wt*var*out*(sigmoid(out)*(1-sigmoid(out)))*preinput[i];
+
+}
+wt[len-1]+=lrate_wt*var*out*(sigmoid(out)*(1-sigmoid(out)));
+return result;
+}
+
 
 
 void neuron::clear(){
@@ -169,7 +226,7 @@ vector<double> out;
 public:
 layer(int neuronlen,int inlen);
 vector<double> feedforword(vector<double> input);
-vector<double> backprop(vector<double> var);
+vector<double> backprop(vector<double> var,int l_num);
 void readout(int n);
 };
 
@@ -190,15 +247,17 @@ out=temp;
 return temp;
 }
 
-vector<double> layer::backprop(vector<double> var){
+vector<double> layer::backprop(vector<double> var,int l_num){
   vector<vector<double> > result;
   vector<double> res(inputlen,0);
   for(int i =0;i<len;i++){
-   result.push_back( neurons[i].backprop(var.at(i)));
+    if(xtt)
+    cout<<"nuron"<<i<<"\n";
+   result.push_back( neurons[i].backprop(var.at(i),l_num));
   }
   for(int i=0;i<inputlen;i++){
     for(int j=0;j<len;j++)
-      res[i]+=result[j][i]/len;
+      res[i]+=result[j][i];
   }
   return res;
 }
@@ -269,12 +328,18 @@ vector<double> network::backprop(int itr){
     temp1=layers[j].feedforword(temp1);
     temp.assign(input.set[i].begin()-1+input.ilen,input.set[i].end());
     for(int j=0;j<temp.size();j++){
-      temp[j]=temp[j]-temp1[j];
+      temp[j]=pow(temp[j]-temp1[j],2)*2*(temp[j]-temp1[j]);
     }
-    temp=layers[len-1].backprop(temp);
+    if(xtt)
+    cout<<"layer"<<len-1<<"\n";
+    temp=layers[len-1].backprop(temp,len-1);
     for(int j=len-2;j>=0;j--){
-      temp=layers[j].backprop(temp);
+      if(xtt)
+      cout<<"layer"<<j<<"\n";
+      temp=layers[j].backprop(temp,i);
     }
+    temp.clear();
+    temp1.clear();
    }
  } 
  return temp;
