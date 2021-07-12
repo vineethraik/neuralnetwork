@@ -8,20 +8,22 @@
 #include<ctime>
 using namespace std;
 
-/* ________********       constents      ********________ */
+/*******************************constants**************************************/
 #define lrate_wt .3
 #define lratew_input .1
 #define xtt false
 
-/* ________********       sigmoid       ********________ */
+/*******************************declaration**************************************/
 
-double sigmoid(double x){
-  return (1/(1+exp(-x)));
-}
+class dataset;
+class neuron;
+class layer;
+class network;
 
+double sigmoid(double);
+void readdatafile(dataset&,string);
 
-
-/* ________********       DATASET       ********________ */
+/*******************************class dataset**************************************/
 class dataset{
   private:
 
@@ -44,7 +46,6 @@ dataset::dataset(){
   olen=0;
 }
 
-
 void dataset::read(){
   int i,j;
     for ( i = 0; i <setlen; i++)
@@ -58,7 +59,6 @@ void dataset::read(){
   }
 }
 
-
 void dataset::compare(vector<vector<double> > input){
   for(int i=0;i<setlen;i++){
     for(int j=0;j<olen;j++)
@@ -70,11 +70,31 @@ void dataset::compare(vector<vector<double> > input){
   }
 }
 
-/* ________********       NEURON       ********________ */
+/*******************************class neuron**************************************/
+class neuron{
+  private:
+  public:
+};
 
-/* ________********       READ DATA FUNCTION       ********________ */
+/*******************************class layer**************************************/
+class layer{
+  private:
+  public:
+};
 
-void readfile(dataset& in,string filename){
+/*******************************class network**************************************/
+class network{
+  private:
+  public:
+};
+
+/*******************************function sigmoid**************************************/
+inline double sigmoid(double x){
+  return (1/(1+exp(-x)));
+}
+
+/*******************************function readdatafile**************************************/
+void readdatafile(dataset& in,string filename){
 string line;
 string word;
 vector<double> vtemp;
@@ -87,7 +107,6 @@ stringstream ss;
   {
     while ( getline (myfile,line) )      // read inputs to input set from input.txt
     {
-    
       ss<<line;
       ss>>word;
       if(word=="ilen"){
@@ -110,8 +129,6 @@ stringstream ss;
           }
           
       }
-    
-    
   }else {
     cout << "Unable to open file";
     exit(0);
@@ -126,10 +143,8 @@ if(isinputpresent){
       ss<<line;
       for ( j = 0; j <in.len; j++)
       {
-       
         ss>>temp;
         vtemp.push_back(temp);
-        
       }
       in.set.push_back(vtemp);
       vtemp.clear();
@@ -139,3 +154,5 @@ if(isinputpresent){
 
       }
 }
+
+/*******************************end**************************************/
