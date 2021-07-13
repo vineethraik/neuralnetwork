@@ -90,11 +90,11 @@ ly=x,net=y;
 class layer1{
   private:
   public:
-  layer1();
+  layer1(int);
 };
 
-layer1::layer1(){
-  
+layer1::layer1(int len){
+
 }
 
 /*******************************class layer**************************************/
